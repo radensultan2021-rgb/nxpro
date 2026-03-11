@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXORA PRO</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+}
+
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+}
+
+/* HEADER IMAGE */
+.header {
+  width: 100%;
+  height: 180px;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+/* TITLE */
+.app-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 12px 0 18px;
+  letter-spacing: 1px;
+}
+
+/* FEATURE LIST */
+.section {
+  padding: 0 16px;
+}
+
+.feature {
+  background: #0f0f0f;
+  border-radius: 14px;
+  padding: 14px 14px 14px 18px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.feature::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  background: #ff2e2e;
+  border-radius: 3px;
+}
+
+.feature-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.feature-title {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.feature-status {
+  color: #ff2e2e;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.feature-desc {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #bdbdbd;
+}
+
+/* SWITCH */
+.switch {
+  margin-top: 10px;
+}
+
+.switch input {
+  appearance: none;
+  width: 40px;
+  height: 20px;
+  background: #333;
+  border-radius: 20px;
+  position: relative;
+}
+
+.switch input::before {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background: #777;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: 0.2s;
+}
+
+.switch input:checked {
+  background: #ff2e2e;
+}
+
+.switch input:checked::before {
+  transform: translateX(20px);
+  background: #fff;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 26px 10px 30px;
+  font-size: 13px;
+}
+
+.footer .dev {
+  color: #ff2e2e;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* ACTIVATION */
+.lock {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lock-box {
+  width: 90%;
+  max-width: 360px;
+  background: #0f0f0f;
+  padding: 20px;
+  border-radius: 14px;
+  text-align: center;
+}
+
+.lock-box h2 {
+  margin-bottom: 12px;
+  color: #ff2e2e;
+}
+
+.lock-box input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+.lock-box button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #ff2e2e;
+  color: #fff;
+  font-weight: 600;
+}
+
+.lock-msg {
+  margin-top: 10px;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="app"></div>
+
+<script>
+/* ====== CONFIG ====== */
+const VALID_CODES = [
+  "NX-PRO-7F2K-A9Q3",
+  "NX-PRO-L8M4-ZX21",
+  "NX-PRO-Q2A9-8F7K",
+  "NX-PRO-3MZL-92QF",
+  "NX-PRO-AK8F-7Q2L",
+  "NX-PRO-9ZQ1-MA7F",
+  "NX-PRO-F7A3-Q2Z8",
+  "NX-PRO-2K9M-ZFQ7",
+  "NX-PRO-Q8F2-AZ91",
+  "NX-PRO-M7ZQ-23AF",
+  "NX-PRO-A9FQ-Z278",
+  "NX-PRO-ZF82-QA9M",
+  "NX-PRO-72MZ-FQ9A",
+  "NX-PRO-QA93-FZ27",
+  "NX-PRO-8FQZ-A29M",
+  "NX-PRO-MZ7A-QF92",
+  "NX-PRO-Q2F9-Z8MA",
+  "NX-PRO-FMZA-792Q",
+  "NX-PRO-ZQ8F-A29M",
+  "NX-PRO-29FQ-ZA7M",
+  "NX-PRO-Q7AF-9Z2M",
+  "NX-PRO-FZ9M-QA72",
+  "NX-PRO-7QFZ-A29M",
+  "NX-PRO-ZM29-QAF7",
+  "NX-PRO-Q92A-ZF7M",
+  "NX-PRO-F7ZM-Q29A",
+  "NX-PRO-MQF7-A29Z",
+  "NX-PRO-2AF9-QZ7M",
+  "NX-PRO-QZ2M-A9F7",
+  "NX-PRO-9F7Q-Z2AM",
+  "NX-PRO-AF29-Z7QM",
+  "NX-PRO-QF7Z-2A9M",
+  "NX-PRO-ZA7F-Q29M",
+  "NX-PRO-M2Z9-QAF7",
+  "NX-PRO-Q9F7-AZM2",
+  "NX-PRO-7ZAF-Q29M",
+  "NX-PRO-QA29-FZ7M",
+  "NX-PRO-FQZ7-A29M",
+  "NX-PRO-Z29M-QAF7",
+  "NX-PRO-Q7MZ-AF29",
+  "NX-PRO-FAZ9-Q72M",
+  "NX-PRO-QMZ7-AF29",
+  "NX-PRO-2ZAF-Q9M7",
+  "NX-PRO-QA7F-Z29M",
+  "NX-PRO-FZ29-QA7M",
+  "NX-PRO-QM29-AZ7F",
+  "NX-PRO-ZAF7-Q29M",
+  "NX-PRO-Q9Z2-AF7M",
+  "NX-PRO-7MZQ-AF29",
+  "NX-PRO-QAF9-Z72M",
+  "NX-PRO-Z7M2-QAF9",
+  "NX-PRO-Q7Z9-AFM2",
+  "NX-PRO-AF7M-QZ29",
+  "NX-PRO-QZAF-729M",
+  "NX-PRO-M29Z-QAF7",
+  "NX-PRO-Q7AF-Z9M2",
+  "NX-PRO-AZQ7-F29M",
+  "NX-PRO-QF29-AZ7M",
+  "NX-PRO-7AFM-QZ29",
+  "NX-PRO-QZ29-AF7M",
+  "NX-PRO-AFZ7-Q29M",
+  "NX-PRO-Q7Z2-AFM9",
+  "NX-PRO-ZA29-QF7M",
+  "NX-PRO-QAF7-MZ29",
+  "NX-PRO-29ZQ-AF7M",
+  "NX-PRO-Q7M2-AZF9",
+  "NX-PRO-AFQZ-729M",
+  "NX-PRO-ZQ29-AF7M",
+  "NX-PRO-QAF9-ZM27",
+  "NX-PRO-7ZAF-Q29M"
+];
+
+const LS_CODE = "nexora_license";
+const LS_DEV  = "nexora_device";
+
+/* ====== API CONFIG (Google Apps Script URL) ====== */
+/* jangan ubah kalo lo gak mau */
+const API_URL = "https://script.google.com/macros/s/AKfycbwxuay0Dfmau6f2tUleBU3zT5xf02iJSAOACohqycr8i_gqX1ZXcDTGGQBlFJVRZKqb/exec";
+
+/* ====== DEVICE LOCK ====== */
+function deviceID(){
+  return btoa(
+    navigator.userAgent +
+    screen.width + screen.height +
+    navigator.language
+  );
+}
+
+const savedCode = localStorage.getItem(LS_CODE);
+const savedDev  = localStorage.getItem(LS_DEV);
+const currentDev = deviceID();
+
+/* ====== RENDER ====== */
+if(savedCode && savedDev){
+  if(savedDev === currentDev){
+    renderApp();
+  } else {
+    renderLocked("License already used on another device.");
+  }
+} else {
+  renderActivate();
+}
+
+function renderActivate(){
+  document.getElementById("app").innerHTML = `
+    <div class="lock">
+      <div class="lock-box">
+        <h2>NEXORA ACTIVATION</h2>
+        <input id="code" placeholder="Enter activation code">
+        <button onclick="activate()">ACTIVATE</button>
+        <div class="lock-msg" id="msg"></div>
+      </div>
+    </div>
+  `;
+}
+
+function activate(){
+  const code = document.getElementById("code").value.trim();
+  const msg  = document.getElementById("msg");
+
+  if(!code){
+    msg.style.color = "#ff4d4d";
+    msg.textContent = "Enter activation code.";
+    return;
+  }
+
+  // ======= call server API to validate and lock device =======
+  const url = API_URL + "?code=" + encodeURIComponent(code) + "&device=" + encodeURIComponent(currentDev);
+
+  msg.style.color = "#fff";
+  msg.textContent = "Checking...";
+
+  fetch(url, { method: "GET", cache: "no-store" })
+    .then(response => response.text())
+    .then(text => {
+      const res = (text || "").toString().trim().toUpperCase();
+
+      if(res === "VALID"){
+        localStorage.setItem(LS_CODE, code);
+        localStorage.setItem(LS_DEV, currentDev);
+        location.reload();
+        return;
+      }
+
+      if(res === "USED"){
+        renderLocked("License already used on another device.");
+        return;
+      }
+
+      if(res === "INVALID"){
+        msg.style.color = "#ff4d4d";
+        msg.textContent = "Invalid activation code.";
+        return;
+      }
+
+      // fallback: if server unknown response, try local check (safe fallback)
+      if(VALID_CODES.includes(code)){
+        localStorage.setItem(LS_CODE, code);
+        localStorage.setItem(LS_DEV, currentDev);
+        location.reload();
+        return;
+      } else {
+        msg.style.color = "#ff4d4d";
+        msg.textContent = "Activation failed (server error).";
+      }
+    })
+    .catch(err => {
+      // network or CORS error: fallback to local behavior (still warns)
+      if(VALID_CODES.includes(code)){
+        localStorage.setItem(LS_CODE, code);
+        localStorage.setItem(LS_DEV, currentDev);
+        location.reload();
+        return;
+      }
+      msg.style.color = "#ff4d4d";
+      msg.textContent = "Network error. Try again.";
+      console.error("Activation fetch error:", err);
+    });
+}
+
+function renderLocked(text){
+  document.getElementById("app").innerHTML = `
+    <div class="lock">
+      <div class="lock-box">
+        <h2>ACCESS DENIED</h2>
+        <div class="lock-msg" style="color:#ff4d4d">${text}</div>
+
+        <button onclick="renderActivate()" style="margin-top:12px;">
+        Try Another Code
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+/* ====== MAIN APP ====== */
+function renderApp(){
+document.getElementById("app").innerHTML = `
+<div class="header">
+  <img src="nexora.png" alt="NEXORA PRO Header">
+</div>
+
+<div class="app-title">NEXORA PRO</div>
+
+<div class="section">
+
+  <div class="feature">
+    <div class="feature-header">
+      <div class="feature-title">DPI Smart AI</div>
+      <div class="feature-status">30%</div>
+    </div>
+    <div class="feature-desc">Smart DPI tuning for steadier aim and improved touch precision.</div>
+    <div class="switch"><input type="checkbox"></div>
+  </div>
+
+  <div class="feature">
+    <div class="feature-header">
+      <div class="feature-title">HeadTrick Mode</div>
+      <div class="feature-status">20%</div>
+    </div>
+    <div class="feature-desc">Enhanced drag stability to support more consistent head contact.</div>
+    <div class="switch"><input type="checkbox"></div>
+  </div>
+
+  <div class="feature">
+    <div class="feature-header">
+      <div class="feature-title">Optimize GO</div>
+      <div class="feature-status">Low</div>
+    </div>
+    <div class="feature-desc">Basic system optimization to reduce minor background interruptions.</div>
+    <div class="switch"><input type="checkbox"></div>
+  </div>
+
+  <div class="feature">
+    <div class="feature-header">
+      <div class="feature-title">Touch Tracker</div>
+      <div class="feature-status">Low</div>
+    </div>
+    <div class="feature-desc">Improves touch input detection for smoother screen response.</div>
+    <div class="switch"><input type="checkbox"></div>
+  </div>
+
+  <div class="feature">
+    <div class="feature-header">
+      <div class="feature-title">Rapid AimTrack</div>
+    </div>
+    <div class="feature-desc">Optimizes screen response during drag movement.</div>
+    <div class="switch"><input type="checkbox"></div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="dev">Dev : DenzzxMODZ</div>
+  <div>tiktok : @denzz.999</div>
+  <div>License Active</div>
+</div>
+`;
+}
+</script>
+
+</body>
+</html>
